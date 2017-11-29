@@ -10,6 +10,8 @@ export default function(state = {}, action) {
 
     case ADD_ADRESS:
       let activeAdress;
+      if(action.state.length === 0) window.location.href = '/';
+      
       if(action.current) {
         activeAdress = action.state[0].title; // Если был добавлен текущий адрес, тогда он становится активным
       } else {

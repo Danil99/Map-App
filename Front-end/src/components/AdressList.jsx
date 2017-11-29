@@ -14,11 +14,11 @@ export default class AdressList extends React.Component {
       <div className="adress-list">
         {
           this.props.adressList && this.props.adressList.map((el, i) =>
-            <div onClick={() => this.props.changeActiveAdress(el.title)} key={el.id} className={`item ${this.props.adress === el.title ? 'active' : ''}`}>
-              <h2>{el.title}</h2>
+            <div key={el._id} className={`item ${this.props.adress === el.title ? 'active' : ''}`}>
+              <h2 onClick={() => this.props.changeActiveAdress(el.title)}>{el.title}</h2>
               {
                 i !== 0 &&
-                <span onClick={() => this.props.deleteAdress(el.id)} className="close"></span>
+                <span onClick={() => this.props.deleteAdress(el._id)} className="close"></span>
               }
             </div>
           )

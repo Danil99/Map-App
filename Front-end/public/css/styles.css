@@ -66,13 +66,13 @@ main {
 main .sidebar .adress-list {
   margin-top: 30px; }
   main .sidebar .adress-list .item {
-    padding: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
     display: -webkit-flex;
     display: -ms-flex;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     transition: all .15s ease; }
     main .sidebar .adress-list .item:hover, main .sidebar .adress-list .item.active {
       border-color: #3a84df; }
@@ -80,9 +80,13 @@ main .sidebar .adress-list {
         background-color: rgba(0, 0, 0, 0.2); }
     main .sidebar .adress-list .item h2 {
       font-size: 17px;
+      padding: 10px;
+      display: block;
+      width: 100%;
       color: #555;
       font-weight: lighter; }
     main .sidebar .adress-list .item span.close {
+      margin: 10px;
       position: relative;
       width: 20px;
       height: 20px;

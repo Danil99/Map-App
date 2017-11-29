@@ -1,5 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 
 var headers = require('./middleware/headers.js');
 
@@ -10,36 +12,71 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(headers);
 
-let db = [];
+let db;
 
 app.post('/addAdress', function (req, res) {
-  if(!db.some(el => el.title === req.body.adress)) {
-    if(req.body.current) {
-      db.shift();
-      db.unshift({
-        id: Date.now(),
-        title: req.body.adress
-      });
-    } else {
-      db.push({
-        id: Date.now(),
-        title: req.body.adress
-      });
+  new Promise((resolve, reject) => {
+    db.collection('adress').findOne({ title: req.body.adress }, function (err, doc) {
+      if(err) reject();
+      resolve(doc);
+    })
+    // Ищем введённый адрес
+  }).then(doc => {
+    if(!doc) {
+      // Если адрес не найден, продолжаем
+      if(req.body.current) { // Если это текущее местоположение
+        db.collection('adress').find().toArray(function (err, docs) {
+          if(err) return res.sendStatus(500);
+          if(docs.length === 0) {
+            // Если массив пустой, то добавляем новый адресс
+            db.collection('adress').insert({title: req.body.adress}, function (err, result) {
+              if(err) return res.sendStatus(500);
+            })
+          } else {
+            // Иначе просто меняем title
+            db.collection('adress').updateOne({}, {title: req.body.adress}, function (err, result) {
+              if(err) return res.sendStatus(500);
+            })
+          }
+        })
+      } else {
+        // Если это не текущее, то просто добавляем в конец массива новый адрес
+        db.collection('adress').insert({title: req.body.adress}, function (err, result) {
+          if(err) return res.sendStatus(500);
+        })
+      }
     }
-  }
-  // Если это текущее местоположение, тогда заменяем новым. Если же просто новое, тогда добавляем в конец массива
-  res.send(db);
+  })
+  .then(() => {
+    getAdress(res);
+  })
+  .catch(err => res.sendStatus(500))
 });
 
 app.put('/deleteAdress', function (req, res) {
-  db = db.filter(el => el.id !== req.body.id);
-  res.send(db);
+  db.collection('adress').deleteOne({_id: ObjectID(req.body.id)}, function (err, result) {
+    if(err) return res.sendStatus(500);
+    // Удаляем адрес по ID
+    getAdress(res);
+  })
 });
 
 app.post('/getAdress', function (req, res) {
-  res.send(db);
+  getAdress(res);
 });
 
-app.listen('8080', function () {
-  console.log('Server is started');
+function getAdress(res) {
+  db.collection('adress').find().toArray(function (err, docs) {
+    if(err) return res.sendStatus(500);
+    res.send(docs)
+    // Собираем и отправляем весь массив на клиент
+  })
+}
+
+MongoClient.connect('mongodb://localhost:27017/', function (err, database) {
+  if(err) return console.log(err);
+  db = database;
+  app.listen('8080', function () {
+    console.log('Server is started');
+  })
 })

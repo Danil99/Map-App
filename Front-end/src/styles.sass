@@ -71,13 +71,13 @@ main
     .adress-list
       margin-top: 30px
       .item
-        padding: 10px
         border-bottom: 1px solid rgba(0, 0, 0, .1)
         cursor: pointer
         display: -webkit-flex
         display: -ms-flex
         display: flex
         justify-content: space-between
+        align-items: center
         transition: all .15s ease
         &:hover, &.active
           border-color: #3a84df
@@ -86,9 +86,13 @@ main
               background-color: rgba(0, 0, 0, .2)
         h2
           font-size: 17px
+          padding: 10px
+          display: block
+          width: 100%
           color: #555
           font-weight: lighter
         span.close
+          margin: 10px
           position: relative
           width: 20px
           height: 20px

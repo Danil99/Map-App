@@ -1,0 +1,114 @@
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+body
+  font-family: Arial, sans-serif
+
+main
+  display: -webkit-flex
+  display: -ms-flex
+  display: flex
+  height: 100vh
+  .sidebar
+    width: 320px
+    background-color: #fff
+    padding: 20px 15px
+    z-index: 2
+    -webkit-box-shadow: 4px 0px 15px -1px rgba(0,0,0,0.2)
+    -moz-box-shadow: 4px 0px 15px -1px rgba(0,0,0,0.2)
+    box-shadow: 4px 0px 15px -1px rgba(0,0,0,0.2)
+    form
+      width: 100%
+      position: relative
+      input
+        width: 100%
+        height: 44px
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02)
+        border-radius: 2px
+        font-size: 15px
+        border: 0
+        padding: 0 48px 0 15px
+        outline: none
+      button
+        width: 48px
+        height: 100%
+        border: 0
+        cursor: pointer
+        position: absolute
+        background-color: transparent
+        outline: none
+        right: 0
+        top: 50%
+        transform: translateY(-50%)
+        &:hover
+          svg
+            polyline
+              stroke: #3a84df
+            circle:first-child
+              fill: #3a84df
+        svg
+          background-color: transparent
+          polyline
+            stroke: #777
+            stroke-width: 5px
+            transition: all .15s ease
+          circle:first-child
+            transition: all .15s ease
+            fill: #777
+
+  .map
+    width: calc(100% - 320px)
+    height: 100%
+    iframe
+      width: 100%
+      height: 100%
+      border: 0
+
+main
+  .sidebar
+    .adress-list
+      margin-top: 30px
+      .item
+        padding: 10px
+        border-bottom: 1px solid rgba(0, 0, 0, .1)
+        cursor: pointer
+        display: -webkit-flex
+        display: -ms-flex
+        display: flex
+        justify-content: space-between
+        transition: all .15s ease
+        &:hover, &.active
+          border-color: #3a84df
+          span.close
+            &::after, &::before
+              background-color: rgba(0, 0, 0, .2)
+        h2
+          font-size: 17px
+          color: #555
+          font-weight: lighter
+        span.close
+          position: relative
+          width: 20px
+          height: 20px
+          display: block
+          &:hover
+            &::after, &::before
+              background-color: #777
+            &::after
+              transform: translate(-50%, -50%) rotate(135deg)
+            &::before
+              transform: translate(-50%, -50%) rotate(-135deg)
+          &::after, &::before
+            content: ''
+            position: absolute
+            width: 20px
+            height: 2px
+            top: 50%
+            left: 50%
+            transition: all .15s ease
+          &::after
+            transform: translate(-50%, -50%) rotate(45deg)
+          &::before
+            transform: translate(-50%, -50%) rotate(-45deg)
